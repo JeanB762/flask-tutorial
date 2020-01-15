@@ -18,6 +18,10 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    @app.route('/')
+    def home():
+        return 'Home'
+
     @app.route('/hello')
     def hello():
         return 'Hello, world!!!'
@@ -25,5 +29,11 @@ def create_app(test_config=None):
     @app.route('/jeanzen')
     def jeanzen():
         return 'Jeanzen'
+
+    from . import db
+    db.init_app(app)
+
+    from . import auth
+    app.register_blueprint(auth.bp)
 
     return app
